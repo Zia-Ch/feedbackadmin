@@ -2,11 +2,14 @@ import 'package:feedbackadmin/helper/async_value_ui.dart';
 import 'package:feedbackadmin/models/feedback/batch_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../controllers/batch_controller.dart';
 
 import '../../../helper/enums/data_table_actions.dart';
 import '../../../helper/responsive.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../../models/dl_form_data.dart';
 import 'dl_text_field.dart';
 
@@ -55,6 +58,13 @@ class _AddBatchsState extends ConsumerState<AddBatchs> {
               );
 
       if (isSuccess) {
+        showTopSnackBar(
+            Overlay.of(context),
+            widget.action == DataTableAction.add
+                ? const CustomSnackBar.success(message: "Added successfully")
+                : const CustomSnackBar.success(
+                    message: "Updated successfully"));
+        ref.read(futureStateUpdator.notifier).update();
         Navigator.pop(context);
       }
     }

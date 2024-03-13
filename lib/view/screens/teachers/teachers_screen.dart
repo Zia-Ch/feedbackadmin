@@ -10,6 +10,7 @@ import '../../../controllers/teacher_controller.dart';
 import '../../../helper/call_custom_dialogues.dart';
 import '../../../helper/enums/data_table_actions.dart';
 import '../../../helper/enums/delete_actions.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../widgets/async_value_widget.dart';
 import '../../widgets/dialog/add_teachers_dialog.dart';
 import '../../widgets/dialog/delete_dialogue.dart';
@@ -39,6 +40,7 @@ class _TeachersScreenState extends ConsumerState<TeachersScreen> {
     bool isSuccess =
         await ref.read(teacherControllerProvider.notifier).delete(action, id);
     if (isSuccess) {
+      ref.read(futureStateUpdator.notifier).update();
       showTopSnackBar(Overlay.of(context),
           const CustomSnackBar.success(message: "deleted successfully"));
     }
@@ -91,7 +93,6 @@ class _TeachersScreenState extends ConsumerState<TeachersScreen> {
             child: AsyncValueWidget(
               value: value,
               data: (data) {
-                print(data.length);
                 return DataTable2(
                   dataRowColor: MaterialStateProperty.resolveWith<Color?>(
                       (Set<MaterialState> states) {
@@ -182,6 +183,7 @@ class _TeachersScreenState extends ConsumerState<TeachersScreen> {
                                             onLogicallyDelete: () {
                                               delete(
                                                   DeleteAction.logically, e.id);
+
                                               Navigator.pop(context);
                                             },
                                             onPermanantlyDelete: () {

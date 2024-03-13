@@ -11,6 +11,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../controllers/batch_controller.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../widgets/async_value_widget.dart';
 import '../../widgets/dialog/simple_delete_dialog.dart';
 
@@ -30,6 +31,7 @@ class _BatchesScreenState extends ConsumerState<BatchesScreen> {
     bool isSuccess =
         await ref.read(batchControllerProvider.notifier).delete(action, id);
     if (isSuccess) {
+      ref.read(futureStateUpdator.notifier).update();
       showTopSnackBar(Overlay.of(context),
           const CustomSnackBar.success(message: "deleted successfully"));
     }

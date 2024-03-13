@@ -4,12 +4,14 @@ import 'package:feedbackadmin/helper/extentions/email_to_roll_no_extention.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../helper/enums/data_table_actions.dart';
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/teacher_model.dart';
 
 // teacher api is ok controller is ok but not tested
 // TODO: adjust teacher add and update
 
 final getAllTeachersProvider = FutureProvider((ref) async {
+  ref.watch(futureStateUpdator);
   return await ref.watch(teacherControllerProvider.notifier).getAllTeachers();
 });
 

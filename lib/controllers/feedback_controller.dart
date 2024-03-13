@@ -6,10 +6,12 @@ import 'package:feedbackadmin/models/feedback/question_model.dart';
 import 'package:feedbackadmin/models/feedback/subject_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/relational_models/user_teacher_feedback_mxn_model.dart';
 
 final feedbackControllerProvider =
     StateNotifierProvider<FeedbackController, AsyncValue>((ref) {
+  ref.watch(futureStateUpdator);
   return FeedbackController(
     feedbackApi: ref.watch(feedBackApiProvider),
   );

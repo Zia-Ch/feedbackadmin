@@ -14,10 +14,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../apis/feedback_api.dart';
 import '../helper/enums/data_table_actions.dart';
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/batch_model.dart';
 import '../models/feedback/user_model.dart';
 
 final getAllStudentsProvider = FutureProvider((ref) async {
+  ref.watch(futureStateUpdator);
   return await ref.watch(studentControllerProvider.notifier).getAllStudents();
 });
 
@@ -199,30 +201,44 @@ class StudentController extends StateNotifier<AsyncValue> {
   Future<void> _formulateDataForassigningFeedbacks(UserModel student) async {
     final List<UserTeacherFeedbackMxN> previousData =
         await _getAllAssignedFeedbacks(student.id);
+
     await _deleteAssignedFeedbacks(previousData);
 
     final List<UserTeacherFeedbackMxN> data = [];
     final List<Teacher> teachers = [];
+
+    final res = await _teacherApi.getAllTeachers();
+    res.fold((l) {
+      state = AsyncError(l.message, l.stackTrace);
+    }, (r) {
+      r.map((e) {
+        teachers.add(Teacher.fromMap(e.data));
+      }).toList();
+    });
+
+    if (teachers.isEmpty) return;
+
     for (var subject in student.subjects) {
-      final res = await _teacherApi.getTeacherSubjectId(subject);
-      res.fold((l) {
-        state = AsyncError(l.message, l.stackTrace);
-      }, (r) {
-        r.map((e) {
-          teachers.add(Teacher.fromMap(e.data));
-        }).toList();
+      for (var teacher in teachers) {
+        if (teacher.subjects.contains(subject)) {
+          data.add(UserTeacherFeedbackMxN(
+            id: '', //"${student.id}  ${teacher.id}  $subject",
+            userId: student.id,
+            teacherId: teacher.id,
+            subjectId: subject,
+            isFeedbackDone: false,
+          ));
+        }
+      }
+    }
 
-        if (teachers.isEmpty) return;
-
-        data.add(UserTeacherFeedbackMxN(
+    /*data.add(UserTeacherFeedbackMxN(
           id: '', //"${student.id}  ${teachers.first.id}  $subject",
           userId: student.id,
           teacherId: teachers.first.id,
           subjectId: subject,
           isFeedbackDone: false,
-        ));
-      });
-    }
+        ));*/
 
     await _assignFeedbacks(data);
   }

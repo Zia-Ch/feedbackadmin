@@ -11,6 +11,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../controllers/students_controller.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../widgets/async_value_widget.dart';
 import '../../widgets/dialog/add_students_dialog.dart';
 
@@ -30,6 +31,7 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
     bool isSuccess =
         await ref.read(studentControllerProvider.notifier).delete(action, id);
     if (isSuccess) {
+      ref.read(futureStateUpdator.notifier).update();
       showTopSnackBar(Overlay.of(context),
           const CustomSnackBar.success(message: "deleted successfully"));
     }
@@ -133,7 +135,7 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                         (e) => DataRow(
                           cells: [
                             DataCell(Text(
-                              e.user.id,
+                              e.user.name, //== '' ? e.user.name : e.user.id,
                             )),
                             DataCell(Text(e.user.email)),
                             DataCell(Text(e.course.courseName)),

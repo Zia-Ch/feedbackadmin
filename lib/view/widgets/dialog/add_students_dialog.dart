@@ -7,6 +7,8 @@ import 'package:feedbackadmin/view/widgets/dialog/dl_drop_down.dart';
 import 'package:feedbackadmin/view/widgets/dialog/dl_responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../controllers/batch_controller.dart';
 import '../../../controllers/course_controller.dart';
@@ -16,6 +18,7 @@ import '../../../controllers/students_controller.dart';
 import '../../../controllers/subject_controller.dart';
 import '../../../helper/auth/email_password_sign_in_validators.dart';
 import '../../../helper/enums/data_table_actions.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../../models/dl_form_data.dart';
 import '../../../models/feedback/relational_models/subject_course_model.dart';
 import '../../../models/feedback/subject_model.dart';
@@ -133,7 +136,14 @@ class _AddStudentsState extends ConsumerState<AddStudents> {
           );
 
       if (isSuccess) {
+        showTopSnackBar(
+            Overlay.of(context),
+            widget.action == DataTableAction.add
+                ? const CustomSnackBar.success(message: "Added successfully")
+                : const CustomSnackBar.success(
+                    message: "Updated successfully"));
         Navigator.pop(context);
+        ref.read(futureStateUpdator.notifier).update();
       }
     }
   }
@@ -171,6 +181,17 @@ class _AddStudentsState extends ConsumerState<AddStudents> {
         }
       }
     } else {
+      for (var item in allSubject) {
+        itemList.add(
+          SubjectDropDownCheckList(
+              id: (UniqueKey).toString(),
+              subjectModel: item.subject,
+              isSelected: false),
+        );
+      }
+    }
+
+    if (itemList.isEmpty) {
       for (var item in allSubject) {
         itemList.add(
           SubjectDropDownCheckList(
@@ -263,6 +284,7 @@ class _AddStudentsState extends ConsumerState<AddStudents> {
             AsyncValueWidget(
               value: allSubjects,
               data: (allSubjects) {
+                print(allSubjects.length);
                 return CLDropDown(
                   hintText: "Select Subjects",
                   items: getItemList(allSubjects),

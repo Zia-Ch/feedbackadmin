@@ -7,11 +7,14 @@ import 'package:feedbackadmin/view/widgets/dialog/dl_drop_down.dart';
 import 'package:feedbackadmin/view/widgets/dialog/dl_responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../controllers/course_controller.dart';
 
 import '../../../controllers/subject_controller.dart';
 import '../../../helper/enums/data_table_actions.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../../models/dl_form_data.dart';
 import 'dl_text_field.dart';
 
@@ -86,7 +89,14 @@ class _AddSubjectsState extends ConsumerState<AddSubjects> {
           );
 
       if (isSuccess) {
+        showTopSnackBar(
+            Overlay.of(context),
+            widget.action == DataTableAction.add
+                ? const CustomSnackBar.success(message: "Added successfully")
+                : const CustomSnackBar.success(
+                    message: "Updated successfully"));
         Navigator.pop(context);
+        ref.read(futureStateUpdator.notifier).update();
       }
     }
   }

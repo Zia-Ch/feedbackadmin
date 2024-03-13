@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../apis/section_api.dart';
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/section_model.dart';
 
 final allSectionProvider = FutureProvider((ref) {
   final sectionController = ref.watch(sectionControllerProvider.notifier);
+  ref.watch(futureStateUpdator);
   return sectionController.getAllSections();
 });
 

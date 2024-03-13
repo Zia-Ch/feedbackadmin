@@ -6,10 +6,12 @@ import 'package:feedbackadmin/helper/extentions/email_to_roll_no_extention.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:appwrite/models.dart' as model;
 
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/user_model.dart';
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, AsyncValue>((ref) {
+  ref.watch(futureStateUpdator);
   return AuthController(
     authApi: ref.watch(authApiProvider),
     userApi: ref.watch(userApiProvider),

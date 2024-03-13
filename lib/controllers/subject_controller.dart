@@ -7,14 +7,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../apis/subjects_api.dart';
 import '../helper/enums/data_table_actions.dart';
 import '../helper/enums/delete_actions.dart';
+import '../helper/shared_state/updator.dart';
 
 final allSubjectsByIdsProvider = FutureProvider.family((ref, List<String> ids) {
   final subjectController = ref.watch(subjectControllerProvider.notifier);
+
   return subjectController.getSubjectsByIds(ids);
 });
 
 final allSubjectsProvider = FutureProvider((ref) {
   final subjectController = ref.watch(subjectControllerProvider.notifier);
+  ref.watch(futureStateUpdator);
+
   return subjectController.getAllSubjects();
 });
 

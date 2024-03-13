@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../apis/course_api.dart';
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/course_model.dart';
 
 final allCourseProvider = FutureProvider((ref) {
   final courseController = ref.watch(courseControllerProvider.notifier);
+  ref.watch(futureStateUpdator);
   return courseController.getAllCourses();
 });
 

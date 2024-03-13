@@ -140,9 +140,10 @@ class TeacherApi implements ITeacherApi {
   FutureEither getTeacherSubjectId(String id) async {
     try {
       final res = await _db.listDocuments(
-          databaseId: AppwriteConstants.databaseId,
-          collectionId: AppwriteConstants.teachersCollectionId,
-          queries: [Query.search("subjects", id)]);
+        databaseId: AppwriteConstants.databaseId,
+        collectionId: AppwriteConstants.teachersCollectionId,
+        //queries: [Query.search("subjects", id)]
+      );
 
       return right(res.documents);
     } on AppwriteConstants catch (e, st) {

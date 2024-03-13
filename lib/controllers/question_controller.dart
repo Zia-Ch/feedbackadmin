@@ -5,9 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../apis/question_api.dart';
 import '../helper/enums/data_table_actions.dart';
 import '../helper/enums/delete_actions.dart';
+import '../helper/shared_state/updator.dart';
 
 final getAllQuestionsProvider = FutureProvider((ref) {
   final questionController = ref.watch(questionControllerProvider.notifier);
+  ref.watch(futureStateUpdator);
+
   return questionController.getAllQuestions();
 });
 

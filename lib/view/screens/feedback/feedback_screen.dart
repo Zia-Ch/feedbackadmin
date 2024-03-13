@@ -7,7 +7,6 @@ import 'package:feedbackadmin/models/feedback/feedback_model.dart';
 import 'package:feedbackadmin/models/feedback/indexd_feedbacks.dart';
 import 'package:feedbackadmin/view/screens/feedback/components/feedback_card.dart';
 import 'package:feedbackadmin/view/screens/feedback/components/feedback_card_header.dart';
-import 'package:feedbackadmin/view/screens/home/home_screen.dart';
 import 'package:feedbackadmin/view/widgets/async_value_widget.dart';
 import 'package:feedbackadmin/view/widgets/gn_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -144,8 +143,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                               questions.value!.length,
                               widget.data.userTeacherFeedbackMxN);
                           if (submitted) {
-                            Navigator.of(context)
-                                .pushReplacement(HomeScreen.route());
+                            Navigator.of(context).pop();
                           }
                         },
                 );

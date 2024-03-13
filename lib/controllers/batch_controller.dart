@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../apis/batch_api.dart';
 import '../helper/enums/data_table_actions.dart';
 import '../helper/enums/delete_actions.dart';
+import '../helper/shared_state/updator.dart';
 import '../models/feedback/batch_model.dart';
 
 final getAllBatchProvider = FutureProvider((ref) {
   final batchController = ref.watch(batchControllerProvider.notifier);
+  ref.watch(futureStateUpdator);
   return batchController.getAllBatches();
 });
 

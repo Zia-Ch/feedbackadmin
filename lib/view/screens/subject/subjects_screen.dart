@@ -11,6 +11,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../controllers/subject_controller.dart';
 import '../../../helper/enums/data_table_actions.dart';
+import '../../../helper/shared_state/updator.dart';
 import '../../widgets/async_value_widget.dart';
 import '../../widgets/dialog/add_subject_dialog.dart';
 
@@ -31,6 +32,7 @@ class _SubjectssScreenState extends ConsumerState<SubjectssScreen> {
     bool isSuccess =
         await ref.read(subjectControllerProvider.notifier).delete(action, id);
     if (isSuccess) {
+      ref.read(futureStateUpdator.notifier).update();
       showTopSnackBar(Overlay.of(context),
           const CustomSnackBar.success(message: "deleted successfully"));
     }

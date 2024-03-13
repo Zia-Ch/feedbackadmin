@@ -27,7 +27,7 @@ class _CheckBoxDialogState extends ConsumerState<CheckBoxDialog> {
         children: [
           Container(
             height: 50,
-            width: 300,
+            width: 450,
             color: Colors.blue,
             alignment: Alignment.center,
             child: Text(
@@ -43,8 +43,8 @@ class _CheckBoxDialogState extends ConsumerState<CheckBoxDialog> {
             height: 5,
           ),
           SizedBox(
-            height: 300,
-            width: 200,
+            height: 450,
+            width: 450,
             child: ListView.builder(
               itemCount: widget.items.length,
               itemBuilder: (context, index) {
@@ -65,7 +65,7 @@ class _CheckBoxDialogState extends ConsumerState<CheckBoxDialog> {
             height: 5,
           ),
           SizedBox(
-            width: 300,
+            width: 450,
             height: 50,
             child: TextButton(
               onPressed: () {
